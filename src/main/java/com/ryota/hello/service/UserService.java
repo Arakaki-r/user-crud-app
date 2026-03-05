@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.ryota.hello.entity.User;
 import com.ryota.hello.repository.UserRepository;
@@ -23,14 +25,12 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public List<UserResponse> findAll() {
-        return userRepository.findAll()
-            .stream()
-            .map(this::toResponse)
-            .toList();
+    public Page<UserResponse> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable)
+        .map(this::toResponse);
     }
      // 作成
-     @Transactional
+    @Transactional
     public UserResponse create(UserCreateRequest request) {
         User user = new User();
         user.setName(request.getName());
