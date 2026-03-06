@@ -1,4 +1,4 @@
-package com.ryota.hello;
+package com.ryota.hello.controller;
 
 import java.util.List;
 
@@ -14,19 +14,21 @@ import com.ryota.hello.dto.UserCreateRequest;
 import com.ryota.hello.dto.UserResponse;
 import com.ryota.hello.dto.UserUpdateRequest;
 import com.ryota.hello.api.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
 
 
 @RestController
 @RequestMapping("/users")
 
-public class HelloController {
+public class UserController {
 
     private final UserService userService;
 
-    public HelloController(UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
+    @Operation(summary = "ユーザー一覧取得")
     @GetMapping
     public ApiResponse<Page<UserResponse>> findAll(
         @RequestParam(defaultValue = "0") int page,
@@ -40,17 +42,19 @@ public class HelloController {
     
 Pageable pageable = PageRequest.of(page, size, sort);
 
-return ApiResponse.success(userService.findAll(pageable));
-    }
+Page<UserResponse> result = userService.findAll(pageable);
+
+return ApiResponse.success(result);
+}
     
     @PostMapping
-    public ApiResponse<UserResponse> createUser(
+    public ApiResponse<UserResponse> create(
         @Valid @RequestBody UserCreateRequest request) {
         return ApiResponse.success(userService.create(request));
     }
 
     @PutMapping("/{id}")
-    public ApiResponse<UserResponse> updateUser(
+    public ApiResponse<UserResponse> update(
         @PathVariable Long id,
         @Valid @RequestBody UserUpdateRequest request) {
         return ApiResponse.success(userService.update(id, request));
@@ -69,7 +73,7 @@ return ApiResponse.success(userService.findAll(pageable));
 
     @GetMapping("/search")
     public ApiResponse<List<UserResponse>> search(
-        @RequestParam String name) {
+        @RequestParam(required = false) String name) {
         return ApiResponse.success(userService.searchByName(name));
     }
 }

@@ -13,7 +13,7 @@ import com.ryota.hello.exception.ResourceNotFoundException;
 import com.ryota.hello.dto.UserCreateRequest;
 import com.ryota.hello.dto.UserResponse;
 import com.ryota.hello.dto.UserUpdateRequest;
-
+import com.ryota.hello.mapper.UserMapper;
 
 @Service
 public class UserService {
@@ -27,7 +27,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public Page<UserResponse> findAll(Pageable pageable) {
         return userRepository.findAll(pageable)
-        .map(this::toResponse);
+        .map(UserMapper::toResponse);
     }
      // 作成
     @Transactional
@@ -38,7 +38,7 @@ public class UserService {
 
         User saved = userRepository.save(user);
 
-        return toResponse(saved);
+        return UserMapper.toResponse(saved);
     }
 
     // 更新
@@ -50,7 +50,7 @@ public class UserService {
 
         existing.setName(request.getName());
         existing.setEmail(request.getEmail());
-        return toResponse(existing);
+        return UserMapper.toResponse(existing);
     }
 
     // 削除
@@ -70,21 +70,13 @@ public class UserService {
                 .orElseThrow(() ->
                         new ResourceNotFoundException("User not found with id: " + id));
 
-        return toResponse(user);
-    }
-
-    // Entity → Response変換
-    private UserResponse toResponse(User user) {
-        return new UserResponse(
-                user.getId(),
-                user.getName(),
-                user.getEmail());
+        return UserMapper.toResponse(user);
     }
 
     public List<UserResponse> searchByName(String name) {
         return userRepository.findByNameContaining(name)
         .stream()
-        .map(this::toResponse)
+        .map(UserMapper::toResponse)
         .toList();
     }
 }
