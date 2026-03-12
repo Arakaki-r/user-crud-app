@@ -1,36 +1,50 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "./api/api";
 
+import Login from "./Login";
 import UserForm from "./components/UserForm";
 import UserList from "./components/UserList";
 import SearchBar from "./components/SearchBar";
 
 function App() {
 
-  const API = "http://localhost:8080/users";
-
   const [users, setUsers] = useState([]);
   const [searchName, setSearchName] = useState("");
   const [editUser, setEditUser] = useState(null);
+  const [isLogin, setIsLogin] = useState(false);
+
+  useEffect(() => {
+
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      setIsLogin(true);
+    }
+
+  }, []);
 
   const fetchUsers = async () => {
-    const res = await axios.get(API);
+
+    const res = await api.get("/users");
+
     setUsers(res.data.data.content);
+
   };
 
   const createUser = async (name, email) => {
 
-    await axios.post(API, {
+    await api.post("/users", {
       name,
       email
     });
 
     fetchUsers();
+
   };
 
   const updateUser = async (id, name, email) => {
 
-    await axios.put(`${API}/${id}`, {
+    await api.put(`/users/${id}`, {
       name,
       email
     });
@@ -38,13 +52,15 @@ function App() {
     setEditUser(null);
 
     fetchUsers();
+
   };
 
   const deleteUser = async (id) => {
 
-    await axios.delete(`${API}/${id}`);
+    await api.delete(`/users/${id}`);
 
     fetchUsers();
+
   };
 
   const startEdit = (user) => {
@@ -57,16 +73,25 @@ function App() {
 
   const searchUser = async () => {
 
-    const res = await axios.get(`${API}/search`, {
+    const res = await api.get("/users/search", {
       params: { name: searchName }
     });
 
     setUsers(res.data.data);
+
   };
 
   useEffect(() => {
-    fetchUsers();
-  }, []);
+
+    if (isLogin) {
+      fetchUsers();
+    }
+
+  }, [isLogin]);
+
+  if (!isLogin) {
+    return <Login onLogin={() => setIsLogin(true)} />;
+  }
 
   return (
 
@@ -95,6 +120,7 @@ function App() {
     </div>
 
   );
+
 }
 
 export default App;
