@@ -16,7 +16,7 @@ import com.ryota.hello.dto.UserUpdateRequest;
 import com.ryota.hello.api.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 
-
+@CrossOrigin(origins = "http://localhost:5174")
 @RestController
 @RequestMapping("/users")
 
