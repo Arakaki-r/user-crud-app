@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ===== backend =====
 backend/target/
 backend/.mvn/
@@ -11,3 +12,6 @@ frontend/dist/
 .DS_Store
 .vscode/
 *.log
+=======
+node_modules 
+>>>>>>> e78cff2ba35ab9b064f1438e0c6829959001dc08
