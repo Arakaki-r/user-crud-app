@@ -1,13 +1,13 @@
-# backend
+# ===== backend =====
 backend/target/
 backend/.mvn/
-*.log
 
-# frontend
+# ===== frontend =====
 frontend/node_modules/
 frontend/dist/
 
-# common
+# ===== common =====
 .env
 .DS_Store
 .vscode/
+*.log
