@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -16,15 +17,33 @@ import java.util.List;
 @Configuration
 public class SecurityConfig {
 
+    private final JwtFilter jwtFilter;
+    private final JwtAuthEntryPoint jwtAuthEntryPoint;
+
+    public SecurityConfig(JwtFilter jwtFilter, JwtAuthEntryPoint jwtAuthEntryPoint) {
+        this.jwtFilter = jwtFilter;
+        this.jwtAuthEntryPoint = jwtAuthEntryPoint;
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-            // CSRF無効（API用）
+            // CSRF無効
             .csrf(csrf -> csrf.disable())
 
             // CORS有効
             .cors(cors -> {})
+
+            // セッション使わない（JWT）
+            .sessionManagement(session ->
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+
+            // 認証エラー処理
+            .exceptionHandling(ex -> ex
+                .authenticationEntryPoint(jwtAuthEntryPoint)
+            )
 
             // 認可設定
             .authorizeHttpRequests(auth -> auth
@@ -36,8 +55,8 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
 
-            // JWTフィルター
-            .addFilterBefore(new JwtFilter(), UsernamePasswordAuthenticationFilter.class);
+            // JWTフィルター（ここ重要）
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -53,11 +72,10 @@ public class SecurityConfig {
         ));
 
         configuration.setAllowedMethods(List.of(
-            "GET","POST","PUT","DELETE"
+            "GET", "POST", "PUT", "DELETE"
         ));
 
         configuration.setAllowedHeaders(List.of("*"));
-
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

@@ -12,13 +12,19 @@ import java.util.Map;
 @RequestMapping("/auth")
 public class AuthController {
 
+    private final JwtUtil jwtUtil;
+
+    public AuthController(JwtUtil jwtUtil) {
+        this.jwtUtil = jwtUtil;
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
 
         if ("admin".equals(request.getUsername()) &&
             "admin".equals(request.getPassword())) {
 
-            String token = JwtUtil.generateToken(request.getUsername());
+            String token = jwtUtil.generateToken(request.getUsername());
 
             return ResponseEntity.ok(Map.of("token", token));
         }
