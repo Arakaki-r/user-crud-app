@@ -32,8 +32,8 @@ public class SecurityConfig {
             // CSRF無効
             .csrf(csrf -> csrf.disable())
 
-            // CORS有効
-            .cors(cors -> {})
+            // ★ CORSをちゃんと適用（ここ重要）
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
             // セッション使わない（JWT）
             .sessionManagement(session ->
@@ -55,7 +55,7 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
 
-            // JWTフィルター（ここ重要）
+            // JWTフィルター
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -68,11 +68,12 @@ public class SecurityConfig {
 
         configuration.setAllowedOrigins(List.of(
             "http://localhost:5173",
-            "http://localhost:3000"
+            "http://localhost:3000",
+            "https://user-crud-app-dusky.vercel.app" // ★これ追加
         ));
 
         configuration.setAllowedMethods(List.of(
-            "GET", "POST", "PUT", "DELETE"
+            "GET", "POST", "PUT", "DELETE", "OPTIONS" // ★OPTIONS追加
         ));
 
         configuration.setAllowedHeaders(List.of("*"));

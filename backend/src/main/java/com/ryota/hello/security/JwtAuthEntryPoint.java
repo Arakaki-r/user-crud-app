@@ -26,3 +26,5 @@ public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
         response.getWriter().write("{\"error\": \"Unauthorized\"}");
     }
 }
+
+
