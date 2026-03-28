@@ -5,22 +5,37 @@ import UserList from "../components/UserList";
 function UserPage() {
 
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-
-    getUsers()
-      .then((res) => setUsers(res.data.data.content))
-      .catch((err) => console.error(err));
-
+    fetchUsers();
   }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const res = await getUsers();
+
+      console.log("APIレスポンス:", res.data); // デバッグ
+
+      setUsers(res.data.data.content || []);
+    } catch (err) {
+      console.error("ユーザー取得エラー:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div>
-
       <h2>User List</h2>
 
-      <UserList users={users} />
-
+      {loading ? (
+        <p>Loading...</p>
+      ) : users.length === 0 ? (
+        <p>データがありません</p>
+      ) : (
+        <UserList users={users} />
+      )}
     </div>
   );
 }

@@ -5,18 +5,28 @@ import UserPage from "./pages/UserPage";
 // 認証ガード
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem("token");
-  return token ? children : <Navigate to="/login" />;
+
+  if (token) {
+    return children;
+  }
+
+  return <Navigate to="/login" replace />;
 };
 
 function App() {
+  const token = localStorage.getItem("token");
+
   return (
     <BrowserRouter>
       <Routes>
 
-        {/* ログイン */}
-        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/login"
+          element={
+            token ? <Navigate to="/users" replace /> : <LoginPage />
+          }
+        />
 
-        {/* 認証必須 */}
         <Route
           path="/users"
           element={
@@ -26,8 +36,9 @@ function App() {
           }
         />
 
-        {/* 初期リダイレクト */}
-        <Route path="*" element={<Navigate to="/login" />} />
+        <Route path="/" element={<Navigate to="/users" replace />} />
+
+        <Route path="*" element={<Navigate to="/login" replace />} />
 
       </Routes>
     </BrowserRouter>
