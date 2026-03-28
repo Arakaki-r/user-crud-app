@@ -13,11 +13,11 @@ function UserPage() {
 
   const fetchUsers = async () => {
     try {
-      const res = await getUsers();
+      const data = await getUsers();
 
-      console.log("APIレスポンス:", res.data); // デバッグ
+      console.log("APIレスポンス:", data); // ←配列が出る
 
-      setUsers(res.data.data.content || []);
+      setUsers(data || []);
     } catch (err) {
       console.error("ユーザー取得エラー:", err);
     } finally {
