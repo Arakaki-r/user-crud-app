@@ -44,6 +44,9 @@ export const login = async (username, password) => {
 
   const token = res.data.token;
 
+  // 念のためログ出す（デバッグ用）
+  console.log("token:", token);
+
   localStorage.setItem("token", token);
 
   return token;

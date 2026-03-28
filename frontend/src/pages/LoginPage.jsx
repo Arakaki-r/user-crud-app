@@ -1,17 +1,23 @@
 import { useState } from "react";
 import { login } from "../api/api";
+import { useNavigate } from "react-router-dom";
 
 function LoginPage() {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async () => {
+  const navigate = useNavigate();
 
+  const handleLogin = async () => {
     try {
       await login(username, password);
-      window.location.href = "/users";
+
+      // ログイン成功後に遷移（これ重要）
+      navigate("/users");
+
     } catch (err) {
+      console.error(err);
       alert("ログイン失敗");
     }
   };
