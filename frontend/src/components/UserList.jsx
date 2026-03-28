@@ -1,10 +1,7 @@
 function UserList({ users, deleteUser, startEdit }) {
 
   return (
-
     <div>
-
-      <h2>User List</h2>
 
       <table border="1" cellPadding="10">
 
@@ -19,36 +16,39 @@ function UserList({ users, deleteUser, startEdit }) {
 
         <tbody>
 
-          {users.map((user) => (
-
-            <tr key={user.id}>
-
-              <td>{user.id}</td>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-
-              <td>
-
-                <button onClick={() => startEdit(user)}>
-                  Edit
-                </button>
-
-                <button onClick={() => deleteUser(user.id)}>
-                  Delete
-                </button>
-
-              </td>
-
+          {users.length === 0 ? (
+            <tr>
+              <td colSpan="4">データがありません</td>
             </tr>
+          ) : (
+            users.map((user) => (
 
-          ))}
+              <tr key={user.id}>
+
+                <td>{user.id}</td>
+                <td>{user.name}</td>
+                <td>{user.email}</td>
+
+                <td>
+                  <button onClick={() => startEdit(user)}>
+                    Edit
+                  </button>
+
+                  <button onClick={() => deleteUser(user.id)}>
+                    Delete
+                  </button>
+                </td>
+
+              </tr>
+
+            ))
+          )}
 
         </tbody>
 
       </table>
 
     </div>
-
   );
 }
 
