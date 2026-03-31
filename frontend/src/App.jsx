@@ -6,12 +6,7 @@ import PropertyPage from "./pages/PropertyPage";
 // 認証ガード
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem("token");
-
-  if (token) {
-    return children;
-  }
-
-  return <Navigate to="/login" replace />;
+  return token ? children : <Navigate to="/login" replace />;
 };
 
 function App() {
@@ -25,7 +20,17 @@ function App() {
         <Route
           path="/login"
           element={
-            token ? <Navigate to="/users" replace /> : <LoginPage />
+            token ? <Navigate to="/properties" replace /> : <LoginPage />
+          }
+        />
+
+        {/* 物件一覧（メイン） */}
+        <Route
+          path="/properties"
+          element={
+            <PrivateRoute>
+              <PropertyPage />
+            </PrivateRoute>
           }
         />
 
@@ -39,21 +44,11 @@ function App() {
           }
         />
 
-        {/* ★ 物件一覧（追加） */}
-        <Route
-          path="/properties"
-          element={
-            <PrivateRoute>
-              <PropertyPage />
-            </PrivateRoute>
-          }
-        />
+        {/* ルート → 物件一覧へ */}
+        <Route path="/" element={<Navigate to="/properties" replace />} />
 
-        {/* ルート */}
-        <Route path="/" element={<Navigate to="/users" replace />} />
-
-        {/* 404 */}
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        {/* 404 → 物件一覧へ */}
+        <Route path="*" element={<Navigate to="/properties" replace />} />
 
       </Routes>
     </BrowserRouter>
