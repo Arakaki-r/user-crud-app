@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { getProperties, deleteProperty, createProperty } from "../api/api";
+import {
+  getProperties,
+  deleteProperty,
+  createProperty,
+  updateProperty
+} from "../api/api";
 
 const PropertyPage = () => {
 
@@ -7,15 +12,16 @@ const PropertyPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  // ★ フォーム表示切り替え
   const [showForm, setShowForm] = useState(false);
 
-  // ★ フォーム入力
+  // ★ 編集用ID
+  const [editingId, setEditingId] = useState(null);
+
   const [form, setForm] = useState({
     name: "",
     address: "",
     rent: "",
-    status: "空室",
+    status: "入居中",
     ownerId: ""
   });
 
@@ -43,38 +49,65 @@ const PropertyPage = () => {
     });
   };
 
-  // ===== 作成処理 =====
-  const handleCreate = async (e) => {
+  // ===== 作成 or 更新 =====
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const newProperty = await createProperty({
+      const payload = {
         ...form,
         rent: Number(form.rent),
         ownerId: Number(form.ownerId)
-      });
+      };
 
-      // 一覧に追加
-      setProperties((prev) => [newProperty, ...prev]);
+      if (editingId) {
+        // ★ 更新
+        const updated = await updateProperty(editingId, payload);
 
-      // フォームリセット
+        setProperties((prev) =>
+          prev.map((p) => (p.id === editingId ? updated : p))
+        );
+
+      } else {
+        // ★ 作成
+        const created = await createProperty(payload);
+
+        setProperties((prev) => [created, ...prev]);
+      }
+
+      // リセット
       setForm({
         name: "",
         address: "",
         rent: "",
-        status: "空室",
+        status: "入居中",
         ownerId: ""
       });
 
+      setEditingId(null);
       setShowForm(false);
 
     } catch (err) {
       console.error(err);
-      alert("作成に失敗しました");
+      alert("処理に失敗しました");
     }
   };
 
-  // ===== 削除処理 =====
+  // ===== 編集開始 =====
+  const handleEdit = (p) => {
+    setForm({
+      name: p.name,
+      address: p.address,
+      rent: p.rent,
+      status: p.status,
+      ownerId: p.ownerId
+    });
+
+    setEditingId(p.id);
+    setShowForm(true);
+  };
+
+  // ===== 削除 =====
   const handleDelete = async (id) => {
     if (!window.confirm("削除してもよろしいですか？")) return;
 
@@ -106,7 +139,10 @@ const PropertyPage = () => {
 
       {/* ★ 作成ボタン */}
       <button
-        onClick={() => setShowForm(!showForm)}
+        onClick={() => {
+          setShowForm(!showForm);
+          setEditingId(null);
+        }}
         style={{
           marginBottom: "16px",
           padding: "8px 12px",
@@ -118,10 +154,10 @@ const PropertyPage = () => {
         ＋ 物件追加
       </button>
 
-      {/* ★ 作成フォーム */}
+      {/* ★ フォーム（作成・更新共通） */}
       {showForm && (
         <form
-          onSubmit={handleCreate}
+          onSubmit={handleSubmit}
           style={{
             backgroundColor: "#ffffff",
             padding: "12px",
@@ -142,7 +178,7 @@ const PropertyPage = () => {
           <br />
 
           <button type="submit" style={{ marginTop: "10px" }}>
-            作成
+            {editingId ? "更新" : "作成"}
           </button>
         </form>
       )}
@@ -166,20 +202,28 @@ const PropertyPage = () => {
             <p>📍 {p.address}</p>
             <p>💰 {p.rent}円</p>
 
-            <button
-              onClick={() => handleDelete(p.id)}
-              style={{
-                marginTop: "10px",
-                backgroundColor: "#ff4d4f",
-                color: "#fff",
-                border: "none",
-                padding: "6px 12px",
-                borderRadius: "4px",
-                cursor: "pointer"
-              }}
-            >
-              削除
-            </button>
+            <div style={{ marginTop: "10px" }}>
+              <button
+                onClick={() => handleEdit(p)}
+                style={{ marginRight: "6px" }}
+              >
+                編集
+              </button>
+
+              <button
+                onClick={() => handleDelete(p.id)}
+                style={{
+                  backgroundColor: "#ff4d4f",
+                  color: "#fff",
+                  border: "none",
+                  padding: "6px 12px",
+                  borderRadius: "4px",
+                  cursor: "pointer"
+                }}
+              >
+                削除
+              </button>
+            </div>
           </div>
         ))
       ) : (
