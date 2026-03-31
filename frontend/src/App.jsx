@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import UserPage from "./pages/UserPage";
+import PropertyPage from "./pages/PropertyPage";
 
 // 認証ガード
 const PrivateRoute = ({ children }) => {
@@ -20,6 +21,7 @@ function App() {
     <BrowserRouter>
       <Routes>
 
+        {/* ログイン */}
         <Route
           path="/login"
           element={
@@ -27,6 +29,7 @@ function App() {
           }
         />
 
+        {/* ユーザー一覧 */}
         <Route
           path="/users"
           element={
@@ -36,8 +39,20 @@ function App() {
           }
         />
 
+        {/* ★ 物件一覧（追加） */}
+        <Route
+          path="/properties"
+          element={
+            <PrivateRoute>
+              <PropertyPage />
+            </PrivateRoute>
+          }
+        />
+
+        {/* ルート */}
         <Route path="/" element={<Navigate to="/users" replace />} />
 
+        {/* 404 */}
         <Route path="*" element={<Navigate to="/login" replace />} />
 
       </Routes>

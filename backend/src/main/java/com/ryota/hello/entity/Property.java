@@ -19,6 +19,7 @@ public class Property {
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
+    @JsonIgnore
     private User owner;
 
 }
