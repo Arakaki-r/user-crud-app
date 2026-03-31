@@ -13,7 +13,6 @@ const PropertyPage = () => {
         const data = await getProperties();
         console.log("取得データ:", data);
 
-        // データ形式の違いに対応
         setProperties(data?.data || data || []);
       } catch (err) {
         console.error(err);
@@ -26,23 +25,35 @@ const PropertyPage = () => {
     fetchData();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>データ取得に失敗しました</p>;
+  if (loading) return <p style={{ color: "#ffffff" }}>Loading...</p>;
+  if (error) return <p style={{ color: "red" }}>データ取得に失敗しました</p>;
 
   return (
-    <div style={{ maxWidth: "600px", margin: "0 auto", padding: "20px" }}>
-      <h2 style={{ marginBottom: "16px" }}>物件一覧</h2>
+    <div
+      style={{
+        maxWidth: "600px",
+        margin: "0 auto",
+        padding: "20px",
+        backgroundColor: "#1a1a1a", // 背景固定（ダーク）
+        minHeight: "100vh"
+      }}
+    >
+      <h2 style={{ marginBottom: "16px", color: "#ffffff" }}>
+        物件一覧
+      </h2>
 
       {Array.isArray(properties) && properties.length > 0 ? (
         properties.map((p) => (
           <div
             key={p.id}
             style={{
-              border: "1px solid #ddd",
+              border: "1px solid #ccc",
               borderRadius: "8px",
               padding: "12px",
               marginBottom: "12px",
-              backgroundColor: "#f9f9f9"
+              backgroundColor: "#ffffff", // カード白固定
+              color: "#000000", // 文字黒固定
+              boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
             }}
           >
             <h3 style={{ margin: "0 0 8px" }}>{p.name}</h3>
@@ -53,7 +64,7 @@ const PropertyPage = () => {
           </div>
         ))
       ) : (
-        <p>データがありません</p>
+        <p style={{ color: "#ffffff" }}>データがありません</p>
       )}
     </div>
   );
