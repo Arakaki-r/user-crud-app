@@ -10,14 +10,19 @@ const PropertyPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log("① API開始");
+
         const data = await getProperties();
-        console.log("取得データ:", data);
+
+        console.log("② API成功:", data);
 
         setProperties(data?.data || data || []);
+
       } catch (err) {
-        console.error(err);
+        console.error("③ APIエラー:", err);
         setError(true);
       } finally {
+        console.log("④ 処理終了");
         setLoading(false);
       }
     };
@@ -30,13 +35,17 @@ const PropertyPage = () => {
     if (!window.confirm("削除してもよろしいですか？")) return;
 
     try {
+      console.log("削除開始:", id);
+
       await deleteProperty(id);
+
+      console.log("削除成功");
 
       // 画面から削除
       setProperties((prev) => prev.filter((p) => p.id !== id));
 
     } catch (err) {
-      console.error(err);
+      console.error("削除エラー:", err);
       alert("削除に失敗しました");
     }
   };
@@ -78,7 +87,6 @@ const PropertyPage = () => {
               💰 {p.rent}円
             </p>
 
-            {/* 🔥 操作ボタン */}
             <div style={{ marginTop: "10px" }}>
               <button style={{ marginRight: "5px" }}>詳細</button>
 
