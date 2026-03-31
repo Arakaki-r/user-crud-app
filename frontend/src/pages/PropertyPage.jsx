@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getProperties } from "../api/api";
+import { getProperties, deleteProperty } from "../api/api";
 
 const PropertyPage = () => {
 
@@ -25,6 +25,22 @@ const PropertyPage = () => {
     fetchData();
   }, []);
 
+  // 🔥 削除処理
+  const handleDelete = async (id) => {
+    if (!window.confirm("削除してもよろしいですか？")) return;
+
+    try {
+      await deleteProperty(id);
+
+      // 画面から削除
+      setProperties((prev) => prev.filter((p) => p.id !== id));
+
+    } catch (err) {
+      console.error(err);
+      alert("削除に失敗しました");
+    }
+  };
+
   if (loading) return <p style={{ color: "#ffffff" }}>Loading...</p>;
   if (error) return <p style={{ color: "red" }}>データ取得に失敗しました</p>;
 
@@ -34,7 +50,7 @@ const PropertyPage = () => {
         maxWidth: "600px",
         margin: "0 auto",
         padding: "20px",
-        backgroundColor: "#1a1a1a", // 背景固定（ダーク）
+        backgroundColor: "#1a1a1a",
         minHeight: "100vh"
       }}
     >
@@ -51,8 +67,8 @@ const PropertyPage = () => {
               borderRadius: "8px",
               padding: "12px",
               marginBottom: "12px",
-              backgroundColor: "#ffffff", // カード白固定
-              color: "#000000", // 文字黒固定
+              backgroundColor: "#ffffff",
+              color: "#000000",
               boxShadow: "0 2px 8px rgba(0,0,0,0.1)"
             }}
           >
@@ -61,6 +77,27 @@ const PropertyPage = () => {
             <p style={{ margin: "4px 0", fontWeight: "bold" }}>
               💰 {p.rent}円
             </p>
+
+            {/* 🔥 操作ボタン */}
+            <div style={{ marginTop: "10px" }}>
+              <button style={{ marginRight: "5px" }}>詳細</button>
+
+              <button style={{ marginRight: "5px" }}>編集</button>
+
+              <button
+                onClick={() => handleDelete(p.id)}
+                style={{
+                  backgroundColor: "#ff4d4f",
+                  color: "#fff",
+                  border: "none",
+                  padding: "5px 10px",
+                  borderRadius: "4px",
+                  cursor: "pointer"
+                }}
+              >
+                削除
+              </button>
+            </div>
           </div>
         ))
       ) : (
