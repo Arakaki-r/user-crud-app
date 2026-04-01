@@ -116,7 +116,7 @@ const PropertyPage = () => {
       style={{
         width: "100%",
         minHeight: "100vh",
-        backgroundColor: "#e5e7eb",
+        backgroundColor: "#d1d5db",
         padding: "20px"
       }}
     >
