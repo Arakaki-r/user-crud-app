@@ -153,7 +153,7 @@ const PropertyPage = () => {
           <form
             onSubmit={handleSubmit}
             style={{
-              backgroundColor: "#fff",
+              backgroundColor: "#271b58",
               padding: "16px",
               borderRadius: "10px",
               marginBottom: "24px",
@@ -197,7 +197,7 @@ const PropertyPage = () => {
               <div
                 key={p.id}
                 style={{
-                  backgroundColor: "#1d1449",
+                  backgroundColor: "#ffffff",
                   padding: "16px",
                   borderRadius: "12px",
                   boxShadow: "0 4px 12px rgba(168, 37, 37, 0.06)",
