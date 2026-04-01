@@ -1,216 +1,163 @@
-<<<<<<< HEAD
-# User Management API
+# ユーザー・物件管理アプリ（JWT認証付きフルスタック）
 
-Spring Bootで開発したユーザー管理REST APIです。
-ユーザーのCRUD操作、入力バリデーション、例外ハンドリング、ページネーションなどを実装しています。
+## 🎯 ポイント
 
-保守性と拡張性を意識し、レイヤードアーキテクチャ（Controller / Service / Repository）を採用しています。
-
----
-
-## 概要
-
-Spring Bootを用いて作成したユーザー管理APIです。
-実務を想定し、責務分離・例外処理の統一・DTOによるデータ分離などを意識した設計で実装しています。
+JWT認証付きのフルスタックアプリとして、バックエンドからフロントエンドまで一貫して実装しました。  
+認証・CRUD・例外処理・API連携・デプロイまで対応しています。
 
 ---
 
-## 設計方針
+## 🌐 デモ（実際に操作可能）
 
-* Controllerは可能な限り薄く保つ
-* ビジネスロジックはService層に集約する
-* Entityは外部に公開しない
-* 例外処理は共通ハンドラーで統一する
-* 入力値検証はBean Validationで実施する
+フロント  
+https://user-crud-app-dusky.vercel.app
 
+API（Swagger）  
+https://user-management-api-bhn3.onrender.com/swagger-ui/index.html
 
----
-
-# 使用技術
-
-* Java 17
-* Spring Boot
-* Maven
-* MySQL
-* Spring Data JPA
-* Jakarta Validation
-* JUnit / MockMvc
-* Git / GitHub
+### ログイン情報
+username: admin  
+password: admin  
 
 ---
 
-# アーキテクチャ設計
+## 📸 画面イメージ（ここに貼る）
 
-本プロジェクトは **レイヤードアーキテクチャ** を採用しています。
+### ログイン画面
+👉 ここにスクショ貼る
 
-```
-Controller
- ↓
-Service
- ↓
-Repository
- ↓
-Entity (DB)
-```
+### ユーザー一覧
+👉 ここにスクショ貼る
+
+### 物件一覧
+👉 ここにスクショ貼る
 
 ---
 
-# Controller層
+## 🧩 システム構成
 
-* HTTPリクエストの受付
-* DTOを利用しEntityの直接公開を防止
-* バリデーション実施
-* ビジネスロジックは持たない
-
----
-
-# Service層
-
-* ビジネスロジックを集約
-* Repositoryとの橋渡し
-* 業務例外のスロー
+- Backend：Spring Boot（REST API + JWT認証）
+- Frontend：React（Vite） + Axios
+- Infrastructure：Render / Vercel
 
 ---
 
-# Repository層
+## 🛠 使用技術
 
-* データベースアクセスのみ担当
-* Spring Data JPAを使用
+### Backend
+- Java 17
+- Spring Boot
+- Spring Security
+- JWT認証
+- Spring Data JPA
+- MySQL
+- Maven
+- Jakarta Validation
 
----
-
-# DTO設計
-
-用途別にDTOを分離
-
-* UserCreateRequest
-* UserUpdateRequest
-* UserResponse
-
-Entityを直接外部公開しない設計。
-
----
-
-# 例外処理
-
-GlobalExceptionHandlerで例外を一元管理。
-
-例
-
-* ResourceNotFoundException
-* ValidationException
+### Frontend
+- React（Vite）
+- Axios
+- React Router
 
 ---
 
-# API仕様
+## 🏗 アーキテクチャ
 
-| Method | Endpoint      | 内容     |
-| ------ | ------------- | ------ |
-| POST   | /users        | ユーザー作成 |
-| GET    | /users        | ユーザー一覧 |
-| GET    | /users/{id}   | 1件取得   |
-| PUT    | /users/{id}   | 更新     |
-| DELETE | /users/{id}   | 削除     |
-| GET    | /users/search | 名前検索   |
-
----
-
-# データベース
-
-MySQLを使用。
-
-主なカラム
-
-* id
-* name
-* email
+Controller  
+↓  
+Service  
+↓  
+Repository  
+↓  
+Entity（DB）
 
 ---
 
-# プロジェクト構成
+## 🔐 認証（JWT）
 
-```
-src/main/java/com/ryota/hello
-
-controller
-service
-repository
-entity
-dto
-mapper
-exception
-api
-```
+- /auth/login でトークン発行
+- JWTをヘッダーに付与してAPI通信
+- /auth/** は認証不要
+- その他APIは認証必須
 
 ---
 
-# テスト
+## 💻 フロント設計
 
-ControllerのAPIテストを実装。
-
-使用技術
-
-* JUnit
-* MockMvc
-* Mockito
-
-例
-
-UserControllerTest
+- Axios interceptorでJWT自動付与
+- 401で自動ログアウト
+- React Routerで認証ガード
 
 ---
 
-# 起動方法
+## 📌 機能
 
-### clone
+### 認証
+- ログイン
 
-git clone https://github.com/xxxxx/user-api.git
+### ユーザー
+- CRUD
+- 検索
+- ページング
 
-### 起動
-
-./mvnw spring-boot:run
-
----
-
-## APIドキュメント
-
-Swagger UIでAPIを確認できます。
-
-http://localhost:8080/swagger-ui.html
+### 物件
+- 作成
+- 一覧
+- 更新
+- 削除
 
 ---
 
-# 工夫した点
+## 📡 API
 
-* DTOを用途別に分離（Create / Update）
-* GlobalExceptionHandlerで例外を一元管理
-* Bean Validationで入力検証
-* Service層にビジネスロジックを集約
-* EntityをAPIレスポンスとして公開しない設計
+POST /auth/login  
+
+POST /users  
+GET /users  
+PUT /users/{id}  
+DELETE /users/{id}  
+
+POST /properties  
+GET /properties  
+PUT /properties/{id}  
+DELETE /properties/{id}  
 
 ---
 
-# 今後の改善予定
+## 💡 工夫した点
 
-* SwaggerによるAPIドキュメント生成
-* ログ設計の強化
-* 認証機能の追加
-* Docker対応
-=======
-# React + Vite
+- JWT認証の実装
+- DTOでEntity非公開
+- GlobalExceptionHandlerで統一エラー処理
+- フロント/バック分離構成
+- Axios interceptorでトークン自動付与
+- デプロイ（Render / Vercel）
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+## ⚠ 苦労した点
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- JWT認証の仕組み理解
+- CORSエラー対応
+- デプロイ時のAPI接続
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🚀 今後
 
-## Expanding the ESLint configuration
+- UI改善
+- テスト追加
+- Docker対応
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
->>>>>>> e78cff2ba35ab9b064f1438e0c6829959001dc08
+---
+
+## ▶ 起動方法
+
+### Backend
+cd backend  
+./mvnw spring-boot:run  
+
+### Frontend
+cd frontend  
+npm install  
+npm run dev  
