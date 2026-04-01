@@ -200,7 +200,8 @@ const PropertyPage = () => {
                   backgroundColor: "#fff",
                   padding: "16px",
                   borderRadius: "12px",
-                  boxShadow: "0 4px 12px rgba(0,0,0,0.06)"
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
+                  color: "#1e293b"   //
                 }}
               >
                 <h3>{p.name}</h3>
