@@ -41,3 +41,24 @@ button {
 button:hover {
   opacity: 0.85;
 }
+
+input {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #334155;
+  background-color: #1e293b;
+  color: #ffffff;
+}
+
+input::placeholder {
+  color: #94a3b8;
+}
+
+button {
+  background-color: #334155;
+  color: #ffffff;
+}
+
+button:hover {
+  opacity: 0.85;
+}
