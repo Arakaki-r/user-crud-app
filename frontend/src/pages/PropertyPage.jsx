@@ -197,11 +197,11 @@ const PropertyPage = () => {
               <div
                 key={p.id}
                 style={{
-                  backgroundColor: "#fff",
+                  backgroundColor: "#1d1449",
                   padding: "16px",
                   borderRadius: "12px",
-                  boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
-                  color: "#1e293b"   //
+                  boxShadow: "0 4px 12px rgba(168, 37, 37, 0.06)",
+                  color: "#010711"   //
                 }}
               >
                 <h3>{p.name}</h3>
