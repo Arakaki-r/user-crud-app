@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getUsers } from "../api/api";
 import UserList from "../components/UserList";
 
 const API_URL = "https://user-management-api-bhn3.onrender.com";
 
 function UserPage() {
+
+  const navigate = useNavigate();
 
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -98,9 +101,29 @@ function UserPage() {
     }
   };
 
+  // ★ログアウト
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
   return (
-    <div>
+    <div style={{ padding: "20px" }}>
       <h2>User List</h2>
+
+      {/* ★ナビ追加 */}
+      <div style={{ marginBottom: "20px" }}>
+        <button onClick={() => navigate("/properties")}>
+          物件管理へ
+        </button>
+
+        <button
+          onClick={handleLogout}
+          style={{ marginLeft: "10px", backgroundColor: "#ef4444", color: "#fff" }}
+        >
+          ログアウト
+        </button>
+      </div>
 
       {/* 入力フォーム */}
       <div style={{ marginBottom: "20px" }}>

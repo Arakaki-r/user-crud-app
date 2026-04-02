@@ -3,28 +3,21 @@ import LoginPage from "./pages/LoginPage";
 import UserPage from "./pages/UserPage";
 import PropertyPage from "./pages/PropertyPage";
 
-// 認証ガード
+// 🔐 認証ガード
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem("token");
   return token ? children : <Navigate to="/login" replace />;
 };
 
 function App() {
-  const token = localStorage.getItem("token");
-
   return (
     <BrowserRouter>
       <Routes>
 
-        {/* ログイン */}
-        <Route
-          path="/login"
-          element={
-            token ? <Navigate to="/properties" replace /> : <LoginPage />
-          }
-        />
+        {/* ✅ ログインは常に表示（ここ重要） */}
+        <Route path="/login" element={<LoginPage />} />
 
-        {/* 物件一覧（メイン） */}
+        {/* ✅ 認証必要ページ */}
         <Route
           path="/properties"
           element={
@@ -34,7 +27,6 @@ function App() {
           }
         />
 
-        {/* ユーザー一覧 */}
         <Route
           path="/users"
           element={
@@ -44,11 +36,11 @@ function App() {
           }
         />
 
-        {/* ルート → 物件一覧へ */}
-        <Route path="/" element={<Navigate to="/properties" replace />} />
+        {/* ✅ 初期アクセスは必ずログインへ */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
-        {/* 404 → 物件一覧へ */}
-        <Route path="*" element={<Navigate to="/properties" replace />} />
+        {/* ✅ 404もログインへ */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
 
       </Routes>
     </BrowserRouter>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   getProperties,
   deleteProperty,
@@ -7,6 +8,8 @@ import {
 } from "../api/api";
 
 const PropertyPage = () => {
+
+  const navigate = useNavigate();
 
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -108,6 +111,12 @@ const PropertyPage = () => {
     }
   };
 
+  // ★ログアウト追加
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
   if (loading) return <p style={{ textAlign: "center" }}>Loading...</p>;
   if (error) return <p style={{ textAlign: "center", color: "red" }}>データ取得に失敗しました</p>;
 
@@ -120,14 +129,28 @@ const PropertyPage = () => {
         padding: "20px"
       }}
     >
-      {/* コンテンツ中央寄せ */}
       <div
         style={{
           maxWidth: "1000px",
           margin: "0 auto"
         }}
       >
+
         <h2 style={{ marginBottom: "20px" }}>物件一覧</h2>
+
+        {/* ★ナビ追加（ここだけ） */}
+        <div style={{ marginBottom: "20px" }}>
+          <button onClick={() => navigate("/users")}>
+            ユーザー管理へ
+          </button>
+
+          <button
+            onClick={handleLogout}
+            style={{ marginLeft: "10px", backgroundColor: "#ef4444" }}
+          >
+            ログアウト
+          </button>
+        </div>
 
         {/* 作成ボタン */}
         <button
@@ -184,7 +207,7 @@ const PropertyPage = () => {
           </form>
         )}
 
-        {/* 一覧（グリッド化） */}
+        {/* 一覧 */}
         <div
           style={{
             display: "grid",
@@ -201,7 +224,7 @@ const PropertyPage = () => {
                   padding: "16px",
                   borderRadius: "12px",
                   boxShadow: "0 4px 12px rgba(168, 37, 37, 0.06)",
-                  color: "#010711"   //
+                  color: "#010711"
                 }}
               >
                 <h3>{p.name}</h3>
