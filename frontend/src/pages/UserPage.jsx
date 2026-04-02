@@ -108,7 +108,12 @@ function UserPage() {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
+    
+    <div style={{
+       padding: "20px" ,
+       minHeight: "100vh",
+       backgroundColor: "#0c2345"
+       }}>
       <h2>User List</h2>
 
       {/* ★ナビ追加 */}
