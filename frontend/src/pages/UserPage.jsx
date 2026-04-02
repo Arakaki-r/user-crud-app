@@ -108,56 +108,72 @@ function UserPage() {
   };
 
   return (
-    
-    <div style={{
-       padding: "20px" ,
-       minHeight: "100vh",
-       backgroundColor: "#0c2345"
-       }}>
-      <h2>User List</h2>
+    <div
+      style={{
+        width: "100%",
+        minHeight: "100vh",
+        backgroundColor: "#0c2345",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "flex-start",
+        paddingTop: "40px"
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          maxWidth: "1000px",
+          padding: "20px",
+          backgroundColor: "#1e293b",
+          borderRadius: "12px",
+          color: "#fff"
+        }}
+      >
+        <h2>User List</h2>
 
-      {/* ★ナビ追加 */}
-      <div style={{ marginBottom: "20px" }}>
-        <button onClick={() => navigate("/properties")}>
-          物件管理へ
-        </button>
+        {/* ★ナビ追加 */}
+        <div style={{ marginBottom: "20px" }}>
+          <button onClick={() => navigate("/properties")}>
+            物件管理へ
+          </button>
 
-        <button
-          onClick={handleLogout}
-          style={{ marginLeft: "10px", backgroundColor: "#ef4444", color: "#fff" }}
-        >
-          ログアウト
-        </button>
+          <button
+            onClick={handleLogout}
+            style={{ marginLeft: "10px", backgroundColor: "#ef4444", color: "#fff" }}
+          >
+            ログアウト
+          </button>
+        </div>
+
+        {/* 入力フォーム */}
+        <div style={{ marginBottom: "20px" }}>
+          <input
+            placeholder="名前"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+
+          <input
+            placeholder="メール"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <button onClick={editingUser ? updateUser : createUser}>
+            {editingUser ? "更新" : "追加"}
+          </button>
+        </div>
+
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <UserList
+            users={users}
+            deleteUser={deleteUser}
+            startEdit={startEdit}
+          />
+        )}
       </div>
-
-      {/* 入力フォーム */}
-      <div style={{ marginBottom: "20px" }}>
-        <input
-          placeholder="名前"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-
-        <input
-          placeholder="メール"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        <button onClick={editingUser ? updateUser : createUser}>
-          {editingUser ? "更新" : "追加"}
-        </button>
-      </div>
-
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <UserList
-          users={users}
-          deleteUser={deleteUser}
-          startEdit={startEdit}
-        />
-      )}
     </div>
   );
 }
