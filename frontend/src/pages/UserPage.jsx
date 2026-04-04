@@ -129,7 +129,7 @@ function UserPage() {
           color: "#fff"
         }}
       >
-        <h2>User List</h2>
+        <h2>ユーザー管理</h2>
 
         {/* ★ナビ追加 */}
         <div style={{ marginBottom: "20px" }}>
