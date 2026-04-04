@@ -137,7 +137,7 @@ const PropertyPage = () => {
       >
 
         <p style={{ color: "#94a3b8", fontSize: "12px" }}>
-          ※ オーナーIDはユーザー一覧のIDを入力してください（例: 1）
+          ※ オーナーIDはユーザー一覧のIDを入力してください（例: 9）
         </p>
 
         <h2 style={{ marginBottom: "20px" }}>物件一覧</h2>
