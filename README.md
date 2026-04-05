@@ -85,6 +85,24 @@ Entity（DB）
 
 ---
 
+## ⚙ Backend構成
+
+- Spring SecurityによるJWT認証
+- DTOでEntityと分離
+- GlobalExceptionHandlerでエラーハンドリング統一
+- JPAでDB操作
+
+---
+
+## 📡 API確認
+
+Swagger UIでAPIの動作確認が可能です  
+https://user-management-api-bhn3.onrender.com/swagger-ui/index.html  
+
+※ フロントを使わずAPI単体でも確認できます
+
+---
+
 ## 🔐 認証（JWT）
 
 - `/auth/login` でトークン発行
