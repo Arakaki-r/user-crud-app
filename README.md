@@ -46,6 +46,15 @@ password: admin
 
 ---
 
+## 🗄 DB設計
+
+ユーザーと物件は1対多の関係となっています。
+
+- 1ユーザーが複数の物件を所有
+- properties.owner_id → users.id を参照（外部キー）
+
+![ER図](er-diagram.png)
+
 ## 🧩 システム構成
 
 - Backend：Spring Boot（REST API + JWT認証）
