@@ -1,9 +1,10 @@
-# ユーザー・物件管理アプリ（JWT認証付きフルスタック）
+# ユーザー・物件管理アプリ
 
-## 🎯 概要
+Spring Boot + React + MySQL を用いて開発した、
+JWT認証付きのフルスタックWebアプリです。
 
-JWT認証付きのフルスタックアプリとして、バックエンドからフロントエンドまで一貫して実装しました。  
-ユーザー管理と物件管理を通して、認証・CRUD・API連携の基本を網羅しています。
+ユーザー管理・物件管理を通して、
+認証・CRUD・API連携・DB設計・デプロイまで一貫して実装しました。
 
 ---
 
@@ -59,7 +60,7 @@ password: admin
 
 - Backend：Spring Boot（REST API + JWT認証）
 - Frontend：React（Vite）
-- Infrastructure：Render / Vercel
+- Infrastructure：Render（API） / Railway（MySQL） / Vercel（Frontend）
 
 ---
 
@@ -109,6 +110,9 @@ Swagger UIでAPIの動作確認が可能です
 https://user-management-api-bhn3.onrender.com/swagger-ui/index.html  
 
 ※ フロントを使わずAPI単体でも確認できます
+
+API一覧画面
+![alt text](image-4.png)
 
 ---
 
@@ -173,11 +177,12 @@ DELETE /properties/{id}
 ## 💡 工夫した点
 
 - JWT認証によるセキュアなAPI設計
-- DTOを用いてEntityを外部に公開しない構成
-- GlobalExceptionHandlerによるエラーハンドリング統一
-- フロント/バックの分離構成
-- Axios interceptorでトークン自動付与
-- デプロイ環境（Render / Vercel）の構築
+- DTOでEntityとAPIレスポンスを分離
+- GlobalExceptionHandlerで例外処理を統一
+- Axios interceptorでJWT自動付与
+- React Routerで認証ガードを実装
+- Railway(MySQL)停止時にRenderログを確認し、原因切り分け・復旧対応を実施
+- Render / Railway / Vercel を使い分けて本番環境を構築
 
 ---
 
@@ -194,6 +199,9 @@ DELETE /properties/{id}
 - UI/UXの改善
 - Service層のテスト追加
 - Docker対応
+- CI/CD（GitHub Actions）導入
+- テストコード拡充（Service層 / Integration Test）
+- Docker Composeによるローカル統一環境
 
 ---
 
@@ -207,3 +215,8 @@ cd backend
 cd frontend  
 npm install  
 npm run dev  
+
+## 🎤 面接でお伝えしたいこと
+
+CRUDを作るだけでなく、
+実務を意識して認証・例外処理・DB設計・API設計・デプロイ・障害対応まで経験する目的で作成しました。
