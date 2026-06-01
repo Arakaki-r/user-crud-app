@@ -67,6 +67,7 @@ password: admin
 ## 🛠 使用技術
 
 ### Backend
+
 - Java 17
 - Spring Boot
 - Spring Security
@@ -77,9 +78,17 @@ password: admin
 - Jakarta Validation
 
 ### Frontend
+
 - React（Vite）
 - Axios
 - React Router
+
+### Infrastructure
+
+- Docker（コンテナ化）
+- Render（Backend）
+- Railway（MySQL）
+- Vercel（Frontend）
 
 ---
 
@@ -101,6 +110,7 @@ Entity（DB）
 - DTOでEntityと分離
 - GlobalExceptionHandlerでエラーハンドリング統一
 - JPAでDB操作
+- Validationによる入力値チェック
 
 ---
 
@@ -183,11 +193,11 @@ DELETE /properties/{id}
 - React Routerで認証ガードを実装
 - Railway(MySQL)停止時にRenderログを確認し、原因切り分け・復旧対応を実施
 - Render / Railway / Vercel を使い分けて本番環境を構築
+- Controller / Service / Repository の責務分離を意識した設計
 
 ---
 
 ## ⚠ 苦労した点
-
 - JWT認証の仕組み理解
 - CORSエラー対応
 - デプロイ時のAPI接続（環境差異）
@@ -198,7 +208,6 @@ DELETE /properties/{id}
 
 - UI/UXの改善
 - Service層のテスト追加
-- Docker対応
 - CI/CD（GitHub Actions）導入
 - テストコード拡充（Service層 / Integration Test）
 - Docker Composeによるローカル統一環境
@@ -219,4 +228,10 @@ npm run dev
 ## 🎤 面接でお伝えしたいこと
 
 CRUDを作るだけでなく、
-実務を意識して認証・例外処理・DB設計・API設計・デプロイ・障害対応まで経験する目的で作成しました。
+実務を意識したアプリケーション開発を経験することを目的に制作しました。
+
+認証（JWT）、例外処理、DB設計、API設計、デプロイまで一貫して実装し、
+開発から運用までの流れを理解することを意識しました。
+
+また、デプロイ後に発生した障害についてもログ調査を行い、
+原因の切り分けと復旧対応を経験しました。
