@@ -17,8 +17,11 @@ API（Swagger）
 https://user-management-api-bhn3.onrender.com/swagger-ui/index.html
 
 ### 🔑 ログイン情報
-username: admin  
-password: admin  
+
+※ デモ用アカウント
+
+username: admin
+password: admin
 
 ---
 
@@ -73,7 +76,7 @@ password: admin
 - Spring Security
 - JWT認証
 - Spring Data JPA
-- MySQL
+- MySQL（Railway）
 - Maven
 - Jakarta Validation
 
@@ -191,16 +194,20 @@ DELETE /properties/{id}
 - GlobalExceptionHandlerで例外処理を統一
 - Axios interceptorでJWT自動付与
 - React Routerで認証ガードを実装
-- Railway(MySQL)停止時にRenderログを確認し、原因切り分け・復旧対応を実施
 - Render / Railway / Vercel を使い分けて本番環境を構築
 - Controller / Service / Repository の責務分離を意識した設計
-
+- Railway(MySQL)停止時にRenderログおよびRailway設定を確認し、
+  原因調査・復旧対応を実施
+- JDBC接続設定や環境変数を修正し、
+  本番環境を復旧
+  
 ---
 
 ## ⚠ 苦労した点
 - JWT認証の仕組み理解
 - CORSエラー対応
-- デプロイ時のAPI接続（環境差異）
+- Render / Railway 間のDB接続設定
+- デプロイ時の環境差異による障害調査
 
 ---
 
